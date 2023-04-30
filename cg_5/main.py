@@ -223,7 +223,6 @@ def fill_with_flag(edges, color_fill, delay=False):
         if delay:
             canvas_win.update()
             sleep(0.0001 * 1)
-    # Sides
     for fig in edges:
         for side in fig:
             draw_line(side[0], side[1], line_color)
@@ -261,7 +260,7 @@ def measure_fill_time(start_time, end_time, color):
 
 def clean_canvas():
     global dots
-    global sides_list
+    global edges
     global image_canvas
     canvas_win.delete("all")
     image_canvas = PhotoImage(width=CV_WIDTH, height=CV_HEIGHT)
