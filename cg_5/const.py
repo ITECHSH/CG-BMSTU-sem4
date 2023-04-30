@@ -4,8 +4,7 @@ WIN_COLOR = "white"
 
 TASK = 'Лабораторная работа 5. Вариант 0:\n Алгоритм растрового заполнения с флагом.   ' \
         '  ИУ7-44Б Шадрин Илья '
-
-CV_WIDE = 570
+CV_WIDTH = 570
 CV_HEIGHT = 570
 CV_COLOR = "#ffffff"  # f3e6ff" #"#cce6ff"
 MAIN_TEXT_COLOR = "white"
