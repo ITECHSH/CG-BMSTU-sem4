@@ -112,32 +112,25 @@ def draw_point(ev_x, ev_y, click_):
             draw_clipper()
 
 
-def get_dot_bits(clipper, dot):
+def get_point_bits(cutter, point):
     bits = 0b0000
-
-    if dot[0] < clipper[0]:
+    if point[0] < cutter[0]:
         bits += 0b0001
-
-    if dot[0] > clipper[1]:
+    if point[0] > cutter[1]:
         bits += 0b0010
-
-    if dot[1] < clipper[2]:
+    if point[1] < cutter[2]:
         bits += 0b0100
-
-    if dot[1] > clipper[3]:
+    if point[1] > cutter[3]:
         bits += 0b1000
-
     return bits
 
 
-def check_visible(dot1_bits, dot2_bits):
-    vision = 0  # частично видимый
-
-    if dot1_bits == 0 and dot2_bits == 0:
-        vision = 1  # видим
-    elif dot1_bits & dot2_bits:
-        vision = -1  # не видим
-
+def if_visible(bits_one, bits_two):
+    vision = 0
+    if bits_one == 0 and bits_two == 0:
+        vision = 1
+    elif bits_one & bits_two:
+        vision = -1
     return vision
 
 
@@ -162,10 +155,9 @@ def method_by_variant(clipper, line):
             fl = 1  # горизонтальный
 
     for i in range(4):
-        dot1_bits = get_dot_bits(clipper, dot1)
-        dot2_bits = get_dot_bits(clipper, dot2)
-
-        vision = check_visible(dot1_bits, dot2_bits)
+        dot1_bits = get_point_bits(clipper, dot1)
+        dot2_bits = get_point_bits(clipper, dot2)
+        vision = if_visible(dot1_bits, dot2_bits)
 
         if vision == -1:
             return  # выйти и не рисовать
@@ -180,7 +172,7 @@ def method_by_variant(clipper, line):
             dot1 = dot2
             dot2 = tmp
 
-        if fl != -1:  # если отрезок не вертикальный
+        if fl != -1:  # если отрезок невертикальный
             if i < 2:  # работаем с правой и левой сторонами
                 dot1[1] = m * (clipper[i] - dot1[0]) + dot1[1]
                 dot1[0] = clipper[i]
@@ -227,16 +219,6 @@ def click(event):
         click_flag = 1
 
     draw_point(event.x, event.y, 1)
-
-
-def draw_all():
-    color_line = cu.Color(line_color[1])
-    color_clipper = cu.Color(clipper_color[1])
-    for figure in history:
-        if figure[2] == 'line':
-            canvas_win.create_line(figure[0], figure[1], fill=color_line, tag='line')
-        elif figure[2] == 'rectangle':
-            canvas_win.create_rectangle(figure[0], figure[1], outline=color_clipper, tag='clipper')
 
 
 # изменение цвета отрезка, результата или отсекателя
